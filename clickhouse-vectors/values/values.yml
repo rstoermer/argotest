@@ -1,0 +1,36 @@
+role: Aggregator
+
+env: 
+  - name: KAFKA_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: kafka-connect-secret
+        key: KAFKA_USERNAME
+  - name: KAFKA_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: kafka-connect-secret
+        key: KAFKA_PASSWORD
+  - name: CLICKHOUSE_LPVIC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: clickhouse-credentials
+        key: lpvic
+
+
+resources: 
+  requests:
+    cpu: 150m
+    memory: 250Mi
+  limits:
+    cpu: 200m
+    memory: 350Mi
+
+service:
+  enabled: false
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi

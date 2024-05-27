@@ -1,0 +1,48 @@
+customConfig:
+  data_dir: /vector-data-dir
+  api:
+    enabled: true
+    address: 127.0.0.1:8686
+    playground: false
+  sources:
+    source:  
+      type: kafka
+      decoding:
+        codec: json
+      bootstrap_servers: ddp-cluster-kafka-brokers.strimzi.svc.cluster.local:9093
+      group_id: lpvic.vector.clickhouse-sink-devices-sink-1
+      auto_offset_reset: earliest
+      topics:
+        - pyro.fhir-stage.devices.v1.json
+      sasl:
+        enabled: true
+        mechanism: SCRAM-SHA-512
+        username: ${KAFKA_USERNAME}
+        password: ${KAFKA_PASSWORD}
+      tls:
+        enabled: false
+      session_timeout_ms: 45000
+
+  sinks:
+    clickhouse:
+      type: clickhouse
+      compression: zstd
+      acknowledgements:
+        enabled: true
+      inputs: 
+        - source
+      endpoint: http://clickhouse-clickhouse:8123
+      format: json_each_row
+      database: ep_pyro_fhir_stage
+      table: devices_v1_dist
+      skip_unknown_fields: true
+      auth: 
+        strategy: basic
+        user: lpvic
+        password: ${CLICKHOUSE_LPVIC_PASSWORD}
+      date_time_best_effort: true
+      encoding:
+          timestamp_format: rfc3339
+      batch:
+        max_events: 100
+        timeout_secs: 10

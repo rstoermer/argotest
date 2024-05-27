@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: clickhouse-vectors
+  namespace: argo
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: eu1-prod
+        name: vector-device-eu1-prod
+        envFile: values-eu1-prod.yaml
+        vectorTemplate: device
+      - cluster: eu1-prod
+        name: vector-location-eu1-prod
+        envFile: values-eu1-prod.yaml
+        vectorTemplate: location
+      - cluster: eu1-prod
+        name: vector-procedure-eu1-prod
+        envFile: values-eu1-prod.yaml
+        vectorTemplate: procedure
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: pyro-vectors
+    spec:
+      project: default
+      source:
+        repoURL: 'https://helm.vector.dev'
+        chart: vector
+        targetRevision: 0.33.0
+        helm:
+          valueFiles:
+          - $values/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
+          - $values/clickhouse-vectors/values/{{envFile}}
+          - $values/clickhouse-vectors/values/values.yaml
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: pyro-vectors

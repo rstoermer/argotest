@@ -1,33 +1,3 @@
-role: Aggregator
-
-env: 
-  - name: KAFKA_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: kafka-connect-secret
-        key: KAFKA_USERNAME
-  - name: KAFKA_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: kafka-connect-secret
-        key: KAFKA_PASSWORD
-  - name: CLICKHOUSE_LPVIC_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: clickhouse-credentials
-        key: lpvic
-
-resources: 
-  requests:
-    cpu: 150m
-    memory: 250Mi
-  limits:
-    cpu: 200m
-    memory: 350Mi
-
-service:
-  enabled: false
-
 customConfig:
   data_dir: /vector-data-dir
   api:
@@ -40,10 +10,10 @@ customConfig:
       decoding:
         codec: json
       bootstrap_servers: ddp-cluster-kafka-brokers.strimzi.svc.cluster.local:9093
-      group_id: lpvic.vector.clickhouse-sink-procedures-sink-1
+      group_id: lpvic.vector.clickhouse-sink-locations-sink-1
       auto_offset_reset: earliest
       topics:
-        - pyro.fhir-stage.procedures.v1.json
+        - pyro.fhir-stage.locations.v1.json
       sasl:
         enabled: true
         mechanism: SCRAM-SHA-512
@@ -64,7 +34,7 @@ customConfig:
       endpoint: http://clickhouse-clickhouse:8123
       format: json_each_row
       database: ep_pyro_fhir_stage
-      table: procedures_v1_dist
+      table: locations_v1_dist
       skip_unknown_fields: true
       auth: 
         strategy: basic
@@ -76,9 +46,3 @@ customConfig:
       batch:
         max_events: 100
         timeout_secs: 10
-
-persistence:
-  enabled: true
-  accessModes:
-    - ReadWriteOnce
-  size: 10Gi
