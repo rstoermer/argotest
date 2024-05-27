@@ -25,15 +25,18 @@ spec:
       namespace: pyro-vectors
     spec:
       project: default
-      source:
-        repoURL: 'https://helm.vector.dev'
-        chart: vector
-        targetRevision: 0.33.0
-        helm:
-          valueFiles:
-          - $values/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
-          - $values/clickhouse-vectors/values/{{envFile}}
-          - $values/clickhouse-vectors/values/values.yaml
+      sources:
+        - repoURL: 'https://helm.vector.dev'
+          chart: vector
+          targetRevision: 0.33.0
+          helm:
+            valueFiles:
+            - $values/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
+            - $values/clickhouse-vectors/values/{{envFile}}
+            - $values/clickhouse-vectors/values/values.yaml
+        - repoURL: 'https://github.com/rstoermer/argotest.git'
+          targetRevision: main
+          ref: values
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: pyro-vectors
