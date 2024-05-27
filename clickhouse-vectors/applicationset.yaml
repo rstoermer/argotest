@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: clickhouse-vectors
-  namespace: argo
+  namespace: argocd
 spec:
   generators:
   - list:
@@ -24,6 +24,8 @@ spec:
       name: '{{name}}'
       namespace: pyro-vectors
     spec:
+      syncPolicy:
+        automated: {}
       project: default
       sources:
         - repoURL: 'https://helm.vector.dev'

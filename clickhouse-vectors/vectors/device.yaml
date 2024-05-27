@@ -21,7 +21,7 @@ customConfig:
         password: ${KAFKA_PASSWORD}
       tls:
         enabled: false
-      session_timeout_ms: 45000
+      session_timeout_ms: 45001
 
   sinks:
     clickhouse:
