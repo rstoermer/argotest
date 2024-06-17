@@ -1,18 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: clickhouse-vectors-app
+  name: team-applications
   namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/rstoermer/argotest.git'
-    targetRevision: main
-    path: clickhouse-vectors
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: argocd
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  generators:
+    - list:
+        elements:
+          - repoURL: 'https://github.com/rstoermer/argotest.git'
+            path: argo-apps
+            targetRevision: 'main'
+            project: 'default'
+            appName: 'pyro-apps'
+  template:
+    metadata:
+      name: '{{appName}}'
+    spec:
+      project: '{{project}}'
+      source:
+        repoURL: '{{repoURL}}'
+        targetRevision: '{{targetRevision}}'
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
