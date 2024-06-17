@@ -15,10 +15,10 @@ spec:
         name: vector-location-eu1-prod
         envFile: values-eu1-prod.yaml
         vectorTemplate: location
-      - cluster: eu1-prod
-        name: vector-procedure-eu1-prod
-        envFile: values-eu1-prod.yaml
-        vectorTemplate: procedure
+      # - cluster: eu1-prod
+      #   name: vector-procedure-eu1-prod
+      #   envFile: values-eu1-prod.yaml
+      #   vectorTemplate: procedure
   template:
     metadata:
       name: '{{name}}'

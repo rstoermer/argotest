@@ -7,9 +7,9 @@ spec:
   generators:
     - list:
         elements:
-          - repoUrl: 'https://draeger.visualstudio.com/DDB%20Solutions/_git/Clickhouse-sink'
+          - repoUrl: 'https://github.com/rstoermer/argotest'
             path: argo-apps
-            targetRevision: 'feature/vector_argo'
+            targetRevision: 'main'
             project: 'pyro'
             appName: 'pyro-apps'
   template:
