@@ -22,11 +22,11 @@ spec:
   template:
     metadata:
       name: '{{name}}'
-      namespace: pyro-vectors
+      namespace: team-pyro
     spec:
       syncPolicy:
         automated: {}
-      project: default
+      project: pyro
       sources:
         - repoURL: 'https://helm.vector.dev'
           chart: vector
@@ -36,10 +36,10 @@ spec:
             - $vectorValues/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
             - $vectorValues/clickhouse-vectors/values/{{envFile}}
             - $vectorValues/clickhouse-vectors/values/values.yaml
-        - repoURL: 'https://github.com/rstoermer/argotest.git'
+        - repoURL: 'https://github.com/rstoermer/argotest'
           targetRevision: main
           ref: vectorValues
           path: clickhouse-vectors
       destination:
         server: 'https://kubernetes.default.svc'
-        namespace: pyro-vectors
+        namespace: team-pyro

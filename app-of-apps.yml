@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: team-applications
+  name: team-apps
   namespace: argocd
 spec:
   generators:
     - list:
         elements:
-          - repoURL: 'https://github.com/rstoermer/argotest.git'
+          - repoUrl: 'https://draeger.visualstudio.com/DDB%20Solutions/_git/Clickhouse-sink'
             path: argo-apps
-            targetRevision: 'main'
-            project: 'default'
+            targetRevision: 'feature/vector_argo'
+            project: 'pyro'
             appName: 'pyro-apps'
   template:
     metadata:
@@ -18,7 +18,7 @@ spec:
     spec:
       project: '{{project}}'
       source:
-        repoURL: '{{repoURL}}'
+        repoURL: '{{repoUrl}}'
         targetRevision: '{{targetRevision}}'
         path: '{{path}}'
       destination:
