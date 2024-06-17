@@ -33,12 +33,13 @@ spec:
           targetRevision: 0.33.0
           helm:
             valueFiles:
-            - $values/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
-            - $values/clickhouse-vectors/values/{{envFile}}
-            - $values/clickhouse-vectors/values/values.yaml
+            - $vectorValues/clickhouse-vectors/vectors/{{vectorTemplate}}.yaml
+            - $vectorValues/clickhouse-vectors/values/{{envFile}}
+            - $vectorValues/clickhouse-vectors/values/values.yaml
         - repoURL: 'https://github.com/rstoermer/argotest.git'
           targetRevision: main
-          ref: values
+          ref: vectorValues
+          path: clickhouse-vectors
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: pyro-vectors
